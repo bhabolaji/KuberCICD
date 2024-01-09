@@ -2,13 +2,19 @@ pipeline {
     agent any
     environment {
         VERSION = "${env.BUILD_ID}"
-        AWS_ACCOUNT_ID="775012328020"
+        AWS_ACCOUNT_ID="144584364258"
         AWS_DEFAULT_REGION="us-east-1"
-        IMAGE_REPO_NAME="my-image-repo"
+        IMAGE_REPO_NAME="jenkins-pipleine"
         IMAGE_TAG= "${env.BUILD_ID}"
-        REPOSITORY_URI = "775012328020.dkr.ecr.us-east-1.amazonaws.com/my-image-repo"
+        REPOSITORY_URI = "144584364258.dkr.ecr.us-east-1.amazonaws.com/jenkins-pipleine"
     }
+   
     stages {
+        stages('Git checkout'){
+            steps{
+                git ' '
+            }
+        }
         
         stage('Build with maven') {
             steps {
@@ -41,8 +47,8 @@ pipeline {
         
          stage('Logging into AWS ECR') {
                      environment {
-                        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
-                        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+                        AWS_ACCESS_KEY_ID = credentials('aws_access_key')
+                        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_key')
                          
                    }
                      steps {
@@ -73,8 +79,8 @@ pipeline {
          
          stage('pull image & Deploying application on eks cluster') {
                     environment {
-                       AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
-                       AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+                       AWS_ACCESS_KEY_ID = credentials('aws_access_key')
+                       AWS_SECRET_ACCESS_KEY = credentials('aws_secret_key')
                  }
                     steps {
                       script{
@@ -88,5 +94,5 @@ pipeline {
                     }
                }
             }
-    }
+    
 }
