@@ -12,7 +12,7 @@ pipeline {
     stages {
         stages('Git checkout'){
             steps{
-                git ' '
+                git ' https://github.com/bhabolaji/KuberCICD.git'
             }
         }
         
